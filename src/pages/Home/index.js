@@ -1,3 +1,4 @@
+/*eslint-disable */
 import Menu from "../../containers/Menu";
 import ServiceCard from "../../components/ServiceCard";
 import EventCard from "../../components/EventCard";
@@ -12,9 +13,20 @@ import Form from "../../containers/Form";
 import Modal from "../../containers/Modal";
 import { useData } from "../../contexts/DataContext";
 
+
+
 const Page = () => {
-  const {last} = useData()
-  return <>
+    const {data, error} = useData();
+    console.log(data?.events)
+    const sortedEvt = data?.events.sort( (evtA, evtB) => {
+        return new Date(evtB.date) - new Date(evtA.date)
+    })
+    console.log("+++++++++++++++++++++")
+    console.log(sortedEvt)
+    
+    console.log("=====================")
+  return (
+  <>
     <header>
       <Menu />
     </header>
@@ -22,7 +34,7 @@ const Page = () => {
       <section className="SliderContainer">
         <Slider />
       </section>
-      <section className="ServicesContainer">
+      <section id="nos-services" className="ServicesContainer">
         <h2 className="Title">Nos services</h2>
         <p>Nous organisons des événements sur mesure partout dans le monde</p>
         <div className="ListContainer">
@@ -51,11 +63,11 @@ const Page = () => {
           </ServiceCard>
         </div>
       </section>
-      <section className="EventsContainer">
+      <section id="nos-realisations" className="EventsContainer">
         <h2 className="Title">Nos réalisations</h2>
         <EventList />
       </section>
-      <section className="PeoplesContainer">
+      <section id="notre-equipe" className="PeoplesContainer">
         <h2 className="Title">Notre équipe</h2>
         <p>Une équipe d’experts dédiés à l’ogranisation de vos événements</p>
         <div className="ListContainer">
@@ -116,12 +128,13 @@ const Page = () => {
     <footer className="row">
       <div className="col presta">
         <h3>Notre derniére prestation</h3>
+        {error && <div>An error occured</div>}
         <EventCard
-          imageSrc={last?.cover}
-          title={last?.title}
-          date={new Date(last?.date)}
+          imageSrc={sortedEvt[sortedEvt.length-1].cover}
+          title={sortedEvt[sortedEvt.length-1].title}
+          date={new Date(sortedEvt[sortedEvt.length-1].date)}
           small
-          label="boom"
+          label={sortedEvt[sortedEvt.length-1].title}
         />
       </div>
       <div className="col contact">
@@ -155,6 +168,7 @@ const Page = () => {
       </div>
     </footer>
   </>
+  )
 }
 
 export default Page;

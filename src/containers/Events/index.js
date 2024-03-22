@@ -11,27 +11,58 @@ const PER_PAGE = 9;
 
 const EventList = () => {
   const { data, error } = useData();
-  const [type, setType] = useState();
+  const [type, setType] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  
   const filteredEvents = (
     (!type
       ? data?.events
       : data?.events) || []
-  ).filter((event, index) => {
+  ).filter((event) => {
+    if (event.type === type || type === null) {
+        return true;
+    }
+    return false;
+  }).filter((event, index) => {
     if (
-      (currentPage - 1) * PER_PAGE <= index &&
-      PER_PAGE * currentPage > index
-    ) {
+      ((currentPage - 1) * PER_PAGE <= index &&
+      PER_PAGE * currentPage > index && event.type === type) || ((currentPage - 1) * PER_PAGE <= index &&
+      PER_PAGE * currentPage > index && type === null)
+    )  {
       return true;
     }
     return false;
   });
-  const changeType = (evtType) => {
-    setCurrentPage(1);
-    setType(evtType);
-  };
-  const pageNumber = Math.floor((filteredEvents?.length || 0) / PER_PAGE) + 1;
   const typeList = new Set(data?.events.map((event) => event.type));
+  let pageNumber = Math.floor((filteredEvents?.length || 0) / PER_PAGE) + 1;
+  
+  const changeType = (evtType) => {
+    
+    if (typeof evtType === 'number'){
+        console.log("++++++++++")
+        setCurrentPage(evtType+1)
+        console.log(`current page number --${currentPage}`)
+        console.log(`evtType number --${currentPage}`)
+        console.log("++++++++++")
+        
+    }
+    else {
+        pageNumber = 1 ? setCurrentPage(1) : setCurrentPage(currentPage)
+        setType(evtType);
+        console.log("===================")
+        console.log(`evtType string -- ${evtType}`)
+        console.log(typeList)
+        console.log(data.events)
+        console.log(filteredEvents)
+        console.log(`current page event -- ${currentPage}`)
+        console.log("===================")
+        
+    }
+    
+
+  };
+
+  
   return (
     <>
       {error && <div>An error occured</div>}
@@ -62,7 +93,7 @@ const EventList = () => {
           <div className="Pagination">
             {[...Array(pageNumber || 0)].map((_, n) => (
               // eslint-disable-next-line react/no-array-index-key
-              <a key={n} href="#events" onClick={() => setCurrentPage(n + 1)}>
+              <a key={n} href="#events" onClick={() => changeType(n)}>
                 {n + 1}
               </a>
             ))}
