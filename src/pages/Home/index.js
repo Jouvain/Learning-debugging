@@ -18,13 +18,10 @@ import { useData } from "../../contexts/DataContext";
 const Page = () => {
     const {data, error} = useData();
     console.log(data?.events)
-    const sortedEvt = data?.events.sort( (evtA, evtB) => {
+    const sortedEvt = data?.events?.sort( (evtA, evtB) => {
         return new Date(evtB.date) - new Date(evtA.date)
     })
-    console.log("+++++++++++++++++++++")
-    console.log(sortedEvt)
-    
-    console.log("=====================")
+  
   return (
   <>
     <header>
@@ -119,7 +116,7 @@ const Page = () => {
           {({ setIsOpened }) => (
             <Form
               onSuccess={() => setIsOpened(true)}
-              onError={() => null}
+              onError={() => console.log("échec form")}
             />
           )}
         </Modal>
@@ -127,15 +124,21 @@ const Page = () => {
     </main>
     <footer className="row">
       <div className="col presta">
-        <h3>Notre derniére prestation</h3>
+        <h3>Notre dernière prestation</h3>
         {error && <div>An error occured</div>}
+       {data === null ?
+        ("loading") :
+        ( 
+       
         <EventCard
-          imageSrc={sortedEvt[sortedEvt.length-1].cover}
-          title={sortedEvt[sortedEvt.length-1].title}
-          date={new Date(sortedEvt[sortedEvt.length-1].date)}
+          imageSrc={sortedEvt[0].cover}
+          title={sortedEvt[0].title}
+          date={new Date(sortedEvt[0].date)}
           small
-          label={sortedEvt[sortedEvt.length-1].title}
+          label={sortedEvt[0].type}
         />
+        )}
+            
       </div>
       <div className="col contact">
         <h3>Contactez-nous</h3>
@@ -172,3 +175,14 @@ const Page = () => {
 }
 
 export default Page;
+
+
+/*
+        <EventCard
+          imageSrc={sortedEvt[sortedEvt.length-1].cover}
+          title={sortedEvt[sortedEvt.length-1].title}
+          date={new Date(sortedEvt[sortedEvt.length-1].date)}
+          small
+          label={sortedEvt[sortedEvt.length-1].title}
+        />
+*/
