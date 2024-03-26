@@ -1,38 +1,44 @@
-// import { useEffect, useState } from "react";
-import { useState } from "react";
+ import { useEffect, useState } from "react";
+// import { useState } from "react";
 import { useData } from "../../contexts/DataContext";
 import { getMonth } from "../../helpers/Date";
-
-
 import "./style.scss";
 
-const Slider = () => {
-  const { data } = useData();
-  const [index, setIndex] = useState(0);
-  const byDateDesc = data?.focus.sort((evtA, evtB) =>
+let timeOutId;
+const  Slider = () => {
+  const { data } =  useData();
+  const [index, setIndex] =  useState(0);
+  const byDateDesc =  data?.focus.sort((evtA, evtB) =>
     new Date(evtA.date) < new Date(evtB.date) ? -1 : 1
   );
-  /*
-  const nextCard = () => {
-    setTimeout(
-      () => setIndex(index < byDateDesc.length-1 ? index + 1 : 0),
-      5000, console.log(`TEST-${index}`), 5000, console.log(byDateDesc.length-1), 5000
-    );
-  };
-  */
   
+  const nextCard = () => {
+    if(byDateDesc === null || byDateDesc === undefined) {
+        console.log("byDada est null ou indéfini")
+    }
+    else {
+        console.log(byDateDesc)
+        timeOutId = setTimeout(
+            () => setIndex(index < byDateDesc.length-1 ? index + 1 : 0),
+            5000, console.log(`TEST-${index}`), 5000, console.log(byDateDesc.length-1), 5000
+          );
+    }
+  };
+  
+  useEffect(() => {
+    nextCard();
+  });
   
 
   function handleRadio(synthEvent){
     const value = parseInt(synthEvent.currentTarget.value, 10)
     setIndex(value)
     console.log(`click -- ${value}`)
+    clearTimeout(timeOutId) 
   }
-  /*
-  useEffect(() => {
-    nextCard();
-  });
-  */
+  
+
+  
   
   return (
     <div className="SlideCardList">
