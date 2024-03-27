@@ -13,27 +13,19 @@ const  Slider = () => {
   );
   
   const nextCard = () => {
-    if(byDateDesc === null || byDateDesc === undefined) {
-        console.log("byDada est null ou indéfini")
-    }
-    else {
-        console.log(byDateDesc)
-        timeOutId = setTimeout(
-            () => setIndex(index < byDateDesc.length-1 ? index + 1 : 0),
-            5000, console.log(`TEST-${index}`), 5000, console.log(byDateDesc.length-1), 5000
+         timeOutId = setTimeout(
+            () => setIndex(index+1 < byDateDesc?.length ? index + 1 : 0),
+            5000
           );
-    }
+    
   };
-  
   useEffect(() => {
     nextCard();
   });
   
-
   function handleRadio(synthEvent){
     const value = parseInt(synthEvent.currentTarget.value, 10)
     setIndex(value)
-    console.log(`click -- ${value}`)
     clearTimeout(timeOutId) 
   }
   
@@ -83,20 +75,4 @@ const  Slider = () => {
 export default Slider;
 
 
-/* 
-          <div key={`pageContainer--${event.id}`}className="SlideCard__paginationContainer">
-            <div key={`pagination--${event.id}`}className="SlideCard__pagination">
-              {byDateDesc.map((element, radioIdx) => (
-                <input
-                  key={`buttonRadio--${radioIdx}-${event.id}`}
-                  type="radio"
-                  name="radio-button"
-                  value={radioIdx}
-                  onChange={handleRadio}
-                />
 
-                
-              ))}
-            </div>
-          </div>
-*/

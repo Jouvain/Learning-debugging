@@ -39,24 +39,11 @@ const EventList = () => {
   const changeType = (evtType) => {
     
     if (typeof evtType === 'number'){
-        console.log("++++++++++")
-        setCurrentPage(evtType+1)
-        console.log(`current page number --${currentPage}`)
-        console.log(`evtType number --${currentPage}`)
-        console.log("++++++++++")
-        
+        setCurrentPage(evtType+1)     
     }
     else {
         pageNumber = 1 ? setCurrentPage(1) : setCurrentPage(currentPage)
         setType(evtType);
-        console.log("===================")
-        console.log(`evtType string -- ${evtType}`)
-        console.log(typeList)
-        console.log(data.events)
-        console.log(filteredEvents)
-        console.log(`current page event -- ${currentPage}`)
-        console.log("===================")
-        
     }
     
 

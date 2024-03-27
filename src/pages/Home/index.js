@@ -17,10 +17,10 @@ import { useData } from "../../contexts/DataContext";
 
 const Page = () => {
     const {data, error} = useData();
-    console.log(data?.events)
-    const sortedEvt = data?.events?.sort( (evtA, evtB) => {
-        return new Date(evtB.date) - new Date(evtA.date)
-    })
+    const last = data?.events.sort( (evtA, evtB) => {
+        return new Date(evtB.date) <= new Date(evtA.date) ? -1 : 1
+    })[0]
+    
   
   return (
   <>
@@ -126,18 +126,18 @@ const Page = () => {
       <div className="col presta">
         <h3>Notre dernière prestation</h3>
         {error && <div>An error occured</div>}
-       {data === null ?
-        ("loading") :
-        ( 
        
-        <EventCard
-          imageSrc={sortedEvt[0].cover}
-          title={sortedEvt[0].title}
-          date={new Date(sortedEvt[0].date)}
-          small
-          label={sortedEvt[0].type}
-        />
-        )}
+       {last && 
+            <EventCard
+            imageSrc={last.cover}
+            title={last.title}
+            date={new Date(last.date)}
+            small
+            label={last.type}
+      />
+       }
+        
+        
             
       </div>
       <div className="col contact">
@@ -177,12 +177,3 @@ const Page = () => {
 export default Page;
 
 
-/*
-        <EventCard
-          imageSrc={sortedEvt[sortedEvt.length-1].cover}
-          title={sortedEvt[sortedEvt.length-1].title}
-          date={new Date(sortedEvt[sortedEvt.length-1].date)}
-          small
-          label={sortedEvt[sortedEvt.length-1].title}
-        />
-*/
